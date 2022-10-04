@@ -1,0 +1,185 @@
+/////Count Binary Strings
+public static void main(String[] args) {
+    // write your code here
+    Scanner sc = new Scanner(System.in);
+    int n = sc.nextInt();
+  
+
+    int oldzeros = 1;
+    int oldones = 1;
+
+     for(int  i =2;i<= n;i++){
+         int newones = oldones+oldzeros;
+         int newzeros = oldones;
+
+         oldones = newones;
+         oldzeros = newzeros;
+     }
+
+     System.out.println(oldones+oldzeros);
+ }
+
+
+
+
+ //////2320. Count Number of Ways to Place Houses
+
+    public int countHousePlacements(int n) {
+        long mod = 1000000007;
+        long build = 1;
+        long space = 1;
+        for(int i=2;i<=n;i++){
+            long newbuild = space;
+            long newspace = (build+space)%mod;
+            
+            build = newbuild;
+            space = newspace;
+        }
+        
+        long total = (build+space)%mod;
+     long ans=  (total*total)%mod;
+       //// return (int)ans;    
+        
+    }
+
+
+
+///////Paint Fence
+
+public static void main(String[] args) throws Exception {
+
+    Scanner sc= new Scanner(System.in);
+    int n = sc.nextInt();
+    int clr = sc.nextInt();
+
+    long sclr = 0;
+    long dclr = clr;
+    long total = sclr+dclr;
+
+    for(int i=2;i<=n;i++){
+        long nsclr = dclr;
+        long ndclr = total*(clr-1);
+        total  = nsclr+ndclr;
+
+        sclr = nsclr;
+        dclr = ndclr;
+    }
+   System.out.println(total); 
+
+}
+
+
+
+
+
+/////////////////Paint House - Many Colors
+public static void main(String[] args) throws Exception {
+    Scanner sc = new Scanner(System.in);
+    int n =sc.nextInt();
+    int k = sc.nextInt();
+
+    int[][] arr = new int[n][k];
+
+    for(int  i =0;i< arr.length;i++){
+        for(int j=0;j<arr[0].length;j++){
+            arr[i][j] = sc.nextInt();
+        }
+    }
+   
+   int least  = Integer.MAX_VALUE;
+   int secleast = Integer.MAX_VALUE;
+
+   for(int i = 0;i< arr[0].length;i++){
+       if(arr[0][i] <= least){
+           secleast  = least;
+           least = arr[0][i];
+       }else if(arr[0][i] <= secleast){
+           secleast = arr[0][i];
+       }
+    
+   }
+
+   for(int i = 1;i< arr.length;i++){
+       int newleast = Integer.MAX_VALUE;
+       int newsecleast = Integer.MAX_VALUE;
+       for(int  j =0;j< arr[i].length;j++){
+           if(arr[i-1][j] == least){
+               arr[i][j] = arr[i][j]+secleast;
+           }else{
+               arr[i][j] = arr[i][j]+least;
+           }
+
+             if(arr[i][j]<= newleast){
+           newsecleast = newleast;
+           newleast = arr[i][j];
+            }else if (arr[i][j]<= newsecleast){
+                newsecleast = arr[i][j];
+            }
+
+         }
+    
+       least  = newleast;
+       secleast = newsecleast;
+     
+   }
+
+  System.out.println(least);
+}
+
+
+
+
+///////////longest non decreasing subsequence (duplicates allowed)
+
+public int lisNonDec(int[] arr){
+    int[] tails = new int[arr.length];
+    tails[0]  = arr[0];
+    len = 1;
+    for(int i=1;i< arr.length;i++){
+        if(arr[i]>= tails[len-1]){
+            tails[len] = arr[i];
+            len++;
+        }else{
+            int idx = BinarySearch(tails,0,len-1,arr[i]);
+            if(idx<0){
+                idx=-idx;
+                idx = idx-1;
+            }else{
+                idx = idx+1;
+            }
+            tails[idx]  =arr[i];
+        }
+    }
+    return len;
+}
+
+
+
+public int binarySearch(int[] tails,int lo,int hi, int val){
+    int ans = -1;
+    int ans2 = -1;
+    while(lo<=hi){
+        int mid = (lo+hi)/2;
+        if(val == arr[mid]){
+            ans = mid;
+            lo = mid+1;
+
+        }else if(val < arr[mid]){
+            hi = mid-1;
+            ans2 = -(hi+2);
+        }else{
+            lo = mid+1;
+            ans2 = -(lo+1);
+        }
+    }
+    if(ans == -1){
+        return ans2;
+    }else{
+        return ans;
+    }
+}
+
+
+
+
+

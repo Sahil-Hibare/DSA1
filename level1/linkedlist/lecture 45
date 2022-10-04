@@ -1,0 +1,220 @@
+////83. Remove Duplicates from Sorted List
+ public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy=new ListNode(-1);
+         ListNode tail=dummy;
+             dummy.next=head;
+        while(head!=null){
+            if(tail==dummy||head.val!=tail.val){
+                tail.next=head;
+                tail=tail.next;
+               
+            }  
+            head=head.next;
+                
+            
+        }
+         tail.next= null;
+        return dummy.next;
+    }
+
+
+
+
+
+////82. Remove Duplicates from Sorted List II
+
+public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy=new ListNode(-1);
+      //  ListNode curr=head;
+        ListNode tail=dummy;
+        while(head!=null){
+                if(head.next==null || head.val!=head.next.val ){
+                    tail.next=head;
+                    tail=tail.next;
+                     head=head.next;
+                }else{
+                     ListNode curr=head;
+                    while(curr!=null && curr.val==head.val){
+                        curr=curr.next;
+                    }
+                    head=curr;
+                }
+               
+                
+               
+                
+         
+        }
+        tail.next=null;
+        return dummy.next;
+        
+    }
+
+
+
+    // 143. Reorder List
+    // Medium
+    
+    // 5118
+    
+    // 195
+    
+    // Add to List
+    
+    // Share
+    // You are given the head of a singly linked-list. The list can be represented as:
+    
+    // L0 → L1 → … → Ln - 1 → Ln
+    // Reorder the list to be on the following form:
+    
+    // L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+    // You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+
+    class Solution {
+    
+        public ListNode middle(ListNode head){
+            ListNode fast=head;
+            ListNode slow=head;
+            while(fast.next!=null && fast.next.next!=null){
+               fast=fast.next.next;
+                slow=slow.next;
+            }
+            return slow;
+        }
+        
+        public ListNode reverse(ListNode head){
+            ListNode prev=null;
+            ListNode curr=head;
+            ListNode ahead=curr;
+            while(curr!=null){
+                ahead=curr.next;
+                curr.next=prev;
+                prev=curr;
+                curr=ahead;
+            }
+            return prev;
+        }
+        public void reorderList(ListNode head) {
+            if(head==null ||head.next==null){
+                return;
+            }
+            ListNode dummy=new ListNode(-1);
+            ListNode tail=dummy;
+            ListNode mid=middle(head);
+            ListNode rev=reverse(mid.next);
+            mid.next=null;
+            while(head!=null && rev!=null){
+                tail.next=head;
+                head=head.next;
+                tail=tail.next;
+                
+                tail.next=rev;
+                rev=rev.next;
+                tail=tail.next;
+            }
+            if(head!=null){
+                tail.next=head;
+            }
+            head= dummy.next;
+        }
+    }
+
+
+
+//////Unfold Of Linkedlist
+//Easy  Prev   Next
+///Given a singly linkedlist : l0 -> ln -> l1 -> ln-1 -> l2 -> ln-2 -> l3 -> ln-3 -> ..... 
+///reorder it :  l0 -> l1 -> l2 -> l3 -> l4 -> l5 -> l6 ..... -> ln-1 -> ln
+///for more information watch video.
+
+public static void unfold(ListNode head) {
+    ListNode dummy1=new ListNode(-1);
+    ListNode dummy2=new ListNode(-1);
+    ListNode fhalf=dummy1;
+    ListNode shalf=dummy2;
+    while(head!=null){
+        fhalf.next=head;
+        fhalf=head;
+        head=head.next;
+       // fhalf.next=null;
+        
+        if(head!=null){
+            shalf.next=head;
+            shalf=head;
+          //  shalf.next=null;
+            head=head.next;
+        }
+        
+    }
+     fhalf.next=null;
+     shalf.next=null;
+     
+    ListNode mid=reverse(dummy2.next);
+    fhalf.next=mid;
+    head=dummy1.next;
+    
+    
+  }
+
+
+//////328. Odd Even Linked List
+
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+         ListNode dummy1=new ListNode(-1);
+      ListNode dummy2=new ListNode(-1);
+      ListNode fhalf=dummy1;
+      ListNode shalf=dummy2;
+      while(head!=null){
+          fhalf.next=head;
+          fhalf=head;
+          head=head.next;
+         // fhalf.next=null;
+          
+          if(head!=null){
+              shalf.next=head;
+              shalf=head;
+            //  shalf.next=null;
+              head=head.next;
+          }
+          
+      }
+       fhalf.next=null;
+       shalf.next=null;
+       
+     
+      fhalf.next=dummy2.next;
+      return dummy1.next;
+    }
+}
+
+
+
+///Segregate even and odd nodes in a Link List 
+
+class Solution{
+    Node divide(int N, Node head){
+        // code here
+        
+        Node dummy1=new Node(-1);
+        Node dummy2=new Node(-1);
+        Node even=dummy1;
+        Node odd=dummy2;
+        while(head!=null){
+            if(head.data%2==0){
+                even.next=head;
+                even=head;
+                head=head.next;
+                
+            }else{
+                odd.next=head;
+                odd=head;
+                head=head.next;
+            }
+        }
+        even.next=dummy2.next;
+        odd.next=null;
+        return dummy1.next;
+    }
+}

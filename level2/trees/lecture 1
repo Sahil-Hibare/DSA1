@@ -1,0 +1,103 @@
+    ///////////99. Recover Binary Search Tree
+    class Solution {
+        public void recoverTree(TreeNode root) {
+            TreeNode curr = root;
+            TreeNode node1 = null;
+            TreeNode node2 = null;
+            
+            TreeNode prev = null;
+            
+            while(curr != null){
+                if(curr.left == null){
+                    if(prev != null && curr.val <prev.val){
+                        if(node1 == null){
+                        node1 =prev;
+                        node2 = curr;
+                        }else{
+                            node2 = curr;
+                            
+                        }
+                    }
+                    
+                    prev =curr;
+                    curr= curr.right;    
+                    }
+                
+                else{
+                    TreeNode iop = curr.left;
+                    while(iop.right != null && iop.right != curr){
+                        iop = iop.right;
+                    }
+                    if(iop.right == null){
+                        iop.right = curr;
+                        curr =curr.left;
+                    }
+                    else{
+                        iop.right = null;
+                        if(prev != null && curr.val <prev.val){
+                        if(node1 == null){
+                        node1 =prev;
+                        node2 = curr;
+                        }else{
+                            node2 = curr;
+                            
+                        }
+                    }
+                    
+                        
+                        prev = curr;
+                        curr = curr.right;
+                    }
+                
+                }
+            
+    
+            }
+            
+            int temp = node1.val;
+            node1.val = node2.val;
+            node2.val = temp;
+            
+        
+        }
+    }
+
+    //////////////Inorder Successor in BST
+    public Node inorderSuccessor(Node root,Node x)
+            {
+            //add code here.
+            
+                Node prev =null
+            Node curr = root;
+            while(curr != null){
+                if(curr.left == null){
+                    if(prev != null && prev == x){
+                        return curr;
+                    }
+                    prev = curr;
+                    curr = curr.right;
+                    
+                }else{
+                    Node iop =curr.left;
+                    while(iop.right!= null && iop.right !=curr){
+                        iop = iop.right;
+                    }
+                    if(iop.right==null){
+                        iop.right = curr;
+                        curr = curr.left;
+                    }else{
+                        
+                        iop.right =null;
+                        if(prev != null && prev  == x){
+                            return curr;
+                        }
+                        prev = curr;
+                        curr = curr.right;
+                    }
+                    
+                }
+            }
+            return null;
+            }
+
+

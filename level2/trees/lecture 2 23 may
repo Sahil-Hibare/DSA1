@@ -1,0 +1,36 @@
+/////////////Iterative Pre, Post And Inorder Traversals Of Binary Tree
+public static void iterativePrePostInTraversal(Node node) {
+    String pre = "";
+    String in = "";
+    String post = "";
+
+    // write your code here
+    Stack<Pair> stk = new Stack<>();
+    stk.push(new Pair(node,0));
+    while(stk.size()>0){
+       Pair top = stk.peek();
+       
+       if(top.state ==0){
+         pre+= top.node.data+" ";
+          top.state = 1;
+          if(top.node.left != null){
+            stk.push(new Pair(top.node.left,0));
+          }
+
+       }else if(top.state ==1){
+         in+= top.node.data+" ";
+         top.state =2;
+         if(top.node.right != null){
+           stk.push(new Pair(top.node.right,0));
+         }
+
+       }else{
+         post+=top.node.data+" ";
+         stk.pop();
+       }
+    }
+    System.out.println(pre);
+    System.out.println(in);
+    System.out.println(post);
+  }
+

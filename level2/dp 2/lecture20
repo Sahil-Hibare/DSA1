@@ -1,0 +1,39 @@
+///////////////474. Ones and Zeroes
+
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+       int[][][]dp = new int[strs.length+1][m+1][n+1];
+        return helper(strs,m,n,0,dp);
+    }
+    
+    public int helper(String[] strs, int m,int n, int idx,int[][][] dp){
+        if(idx == strs.length){
+            return 0;
+        }
+        if(dp[idx][m][n] !=0){
+            return dp[idx][m][n];
+        }
+        
+        int zs = 0;
+        int os = 0;
+        for(char ch : strs[idx].toCharArray()){
+            if(ch == '0'){
+                zs++;
+            }else{
+                os++;
+            }
+        }
+        
+        int no = helper(strs,m,n,idx+1,dp);
+        int yes = 0;
+        if(m-zs >=0 && n-os>=0){
+            yes = 1 +helper(strs,m-zs,n-os,idx+1,dp);
+        }
+        
+       int res =  Math.max(no,yes);
+        dp[idx][m][n] = res;
+        return res;
+    }
+}
+
+

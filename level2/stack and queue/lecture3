@@ -1,0 +1,189 @@
+
+//////////////////////////844. Backspace String Compare
+
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+     
+        String s1 = compress(s);
+        String s2 = compress(t);
+        
+        return s1.equals(s2);
+    }
+    
+    public String compress(String str){
+        Stack<Character> stk = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0;i < str.length();i++){
+            char ch = str.charAt(i);
+            if(ch != '#'){
+                stk.push(ch);
+            }else{
+                if(stk.size()==0){
+                    continue;
+                }else{
+                    stk.pop();
+                }
+            }
+        }
+        while(stk.size()>0){
+            sb.append(stk.pop());
+        }
+        return sb.reverse().toString();
+    }
+
+
+
+
+
+
+///////////////approach 2
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+     
+        String s1 = compress(s);
+        String s2 = compress(t);
+        
+        return s1.equals(s2);
+    }
+    
+    public String compress(String str){
+        int i  = -1;
+        int j  = -1;
+        int k = 0;
+        StringBuilder sb = new StringBuilder(str);
+        while(k<sb.length()){
+            char ch = sb.charAt(k);
+            if(ch != '#'){
+                i = k;
+                k++;
+            }else{
+                sb.deleteCharAt(k);
+                if(i >=0){
+                    sb.deleteCharAt(i);
+                i--;
+                k--;
+                }
+                
+            }
+        }
+        return sb.toString();
+    }
+}
+
+
+
+////////////////////////Reverse First K elements of Queue
+class GfG {
+    // Function to reverse first k elements of a queue.
+    public Queue<Integer> modifyQueue(Queue<Integer> q, int k) {
+        // add code here.
+        Stack<Integer> stk = new Stack<>();
+        while(k>0){
+            stk.push(q.remove());
+            k--;
+        }
+        int len = q.size();
+        while(stk.size()>0){
+            q.add(stk.pop());
+        }
+        while(len>0){
+            q.add(q.remove());
+            len--;
+        }
+        return q;
+    }
+}
+
+/////////////155. Min Stack
+
+class MinStack {
+    Stack<Integer> data=new Stack<>();;
+    Stack<Integer> min = new Stack<>();
+
+
+    
+    public void push(int val) {
+       data.push(val);
+        if(min.size()==0 || val<= min.peek()){
+            min.push(val);
+        }
+        
+    }
+    
+    public void pop() {
+      if(data.size()>0){
+          if(data.peek().equals(min.peek())){
+              min.pop();
+          }
+          data.pop();
+      }
+        
+    }
+    
+    public int top() {
+      if(data.size()>0){
+          return data.peek();
+      }
+        return -1;
+        
+    }
+    
+    public int getMin() {
+         if(data.size()>0){
+             return min.peek();
+         }
+        return -1;
+        
+    }
+}
+
+
+
+////approach 2
+
+
+class MinStack {
+    Stack<Long> data;
+    Long min;
+
+    public MinStack() {
+        data = new Stack<>();
+        min = Long.MAX_VALUE;
+    }
+    
+    public void push(int val) {
+       long val1 = val;
+	  if(val1<min){
+            data.push(val1+val1-min);
+            min = val1;
+         }
+       else{
+            data.push(val1);
+        }
+    }
+    
+    public void pop() {
+        if(data.peek()<min){
+            long temp = min;
+            min = min+min-data.pop();
+        }else{
+            data.pop();
+        }
+        
+    }
+    
+    public int top() {
+        if(data.peek()<min){
+            return min.intValue();
+        }else{
+          return  data.peek().intValue();
+        }
+        
+    }
+    
+    public int getMin() {
+       return min.intValue();
+    }
+}
+

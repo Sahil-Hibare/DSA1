@@ -1,0 +1,91 @@
+//////////////946. Validate Stack Sequences
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        
+        Stack<Integer> stk  = new Stack<>();
+        int i  =0;
+        int j = 0;
+        stk.push(pushed[i]);
+        i=0;
+        while(i<pushed.length-1 && j< popped.length){
+           
+            
+            if(stk.size()>0 && stk.peek() == popped[j]){
+                j++;
+                stk.pop();
+            }else{
+                i++;
+                stk.push(pushed[i]);
+                
+            }
+        }
+        while(stk.size()>0 && j< popped.length){
+            if(stk.peek() == popped[j]){
+                stk.pop();
+                j++;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+////////////////////895. Maximum Frequency Stack
+class FreqStack {
+    
+    HashMap<Integer,Integer> hmap;
+    HashMap<Integer,Stack<Integer>> data;
+    int mfreq;
+    public FreqStack() {
+        hmap = new HashMap<>();
+        data = new HashMap<>();
+        mfreq = 0;
+    }
+    
+    public void push(int val) {
+        int currfreq = hmap.getOrDefault(val,0)+1;
+        hmap.put(val , currfreq);
+        mfreq = Math.max(currfreq,mfreq);
+        if(!data.containsKey(currfreq)){
+            data.put(currfreq,new Stack<>());
+        }
+        data.get(currfreq).push(val);
+    }
+    
+    public int pop() {
+        int val = data.get(mfreq).pop();
+        if(data.get(mfreq).size()==0){
+            mfreq--;
+        }
+        hmap.put(val,hmap.get(val)-1);
+        return val;
+        
+    }
+}
+
+
+
+////////////////Generate Binary Numbers
+class solve{
+    
+    //Function to generate binary numbers from 1 to N using a queue.
+    static ArrayList<String> generate(int N)
+    {
+        // Your code here
+        Queue<String> q = new LinkedList<>();
+        q.add("1");
+        ArrayList<String> res = new ArrayList<>();
+        for(int i  = 1;i <= N;i++){
+            String temp = q.remove();
+            res.add(temp);
+            q.add(temp+"0");
+            q.add(temp+"1");
+            
+        }
+        return res;
+    }
+    
+}
+
+

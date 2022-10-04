@@ -1,0 +1,102 @@
+////////////////////Minimum and Maximum values of an expression with * and +
+////////////////Input  : expr = “1+2*3+4*5” 
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+	public static void main (String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		String str = sc.nextLine();
+		
+		int[]  oprnd = new int[(str.length()+1)/2];
+		int idx1 = 0;
+		char[] optr = new char[str.length()/2];
+		int idx2 = 0;
+		for(int i = 0;i<str.length();i++){
+		    if(str.charAt(i)>='0' && str.charAt(i)<='9'){
+		        oprnd[idx1++] = str.charAt(i)-'0';
+		    }else{
+		        optr[idx2++] = str.charAt(i);
+		    }
+		}
+		/////// 2d array for min and max;
+		int[][] min = new int[oprnd.length][oprnd.length];
+		int[][] max = new int[oprnd.length][oprnd.length];
+		
+		//////mcm approach
+		for(int g = 0;g<min.length;g++){
+		    for(int i = 0,j= g;j<min.length;i++,j++){
+		        if(g==0){
+		            min[i][j] = oprnd[i];
+		            max[i][j] = oprnd[i];
+		        }else if(g == 1){
+		            if(optr[i]=='+'){
+		                min[i][j] =max[i][j]= oprnd[i]+ oprnd[j];
+		            }else{
+		                min[i][j] =max[i][j]= oprnd[i]* oprnd[j];
+		            }
+		        }
+		        else{
+		                int mini = Integer.MAX_VALUE;
+		                int maxi = Integer.MIN_VALUE;
+		                for(int lt = g,rht = 1;rht<=g;lt--,rht++){
+		                     
+		                     if(optr[j-lt] == '+'){
+		                         mini  =  Math.min(mini,min[i][j-lt]+min[i+rht][j]);
+		                         maxi = Math.max(maxi,max[i][j-lt]+max[i+rht][j]);
+		                     }else{
+		                          mini  =  Math.min(mini,min[i][j-lt]*min[i+rht][j]);
+		                         maxi = Math.max(maxi,max[i][j-lt]*max[i+rht][j]);
+		                     }
+		                }
+		                min[i][j] = mini;
+		                max[i][j]  = maxi;
+		            }
+		        }
+		    }
+		
+		System.out.println(min[0][min.length-1] +"   "+max[0][max.length-1]);
+		
+	}
+}
+
+
+
+///////optimal bst
+class Solution
+{
+    static int optimalSearchTree(int keys[], int freq[], int n)
+    {
+        // code here
+        int[] presum = new int[freq.length];
+        presum[0] = freq[0];
+        for(int i = 1;i<freq.length;i++){
+            presum[i] = freq[i]+presum[i-1];
+        }
+        int[][] dp = new int[keys.length][keys.length];
+        for(int g=0;g<dp.length;g++){
+            for(int i = 0,j=g;j<dp[0].length;i++,j++){
+                if(g==0){
+                    dp[i][j] = freq[i];
+                }else{
+                    dp[i][j] = Integer.MAX_VALUE;
+                    for(int lt = g+1,rt = 1;lt>=1;lt--,rt++){
+                        int left = (j-lt==-1)?0:dp[i][j-lt];
+                        int right = (i+rt==dp.length)?0:dp[i+rt][j];
+                        int factor = presum[j]-(i>0?presum[i-1]:0);
+                        dp[i][j] = Math.min(dp[i][j],left+right+factor);
+                    }
+                }
+            }
+        }
+        return dp[0][dp[0].length-1];
+        
+    }
+}
+
+
+
+ 

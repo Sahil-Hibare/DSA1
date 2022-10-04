@@ -1,0 +1,110 @@
+//////////////Shortest Common Supersequence
+
+class Solution
+{
+    //Function to find length of shortest common supersequence of two strings.
+    public static int shortestCommonSupersequence(String X,String Y,int m,int n)
+    {
+        //Your code here
+        int[][] dp = new int[X.length()+1][Y.length()+1];
+        
+        for(int i = dp.length-1;i>=0;i--){
+            for(int j = dp[0].length-1;j>=0;j--){
+                if(i == dp.length-1 ||j ==dp[0].length-1){
+                    dp[i][j] = 0;
+                }else{
+                
+                char ch1 = X.charAt(i);
+                char ch2 = Y.charAt(j);
+                if(ch1 == ch2){
+                    dp[i][j] = 1+dp[i+1][j+1];
+                }else{
+                    dp[i][j] = Math.max(dp[i][j+1],dp[i+1][j]);
+                }
+                }
+            }
+        }
+        
+        int lcs = dp[0][0];
+        
+        int res = X.length()+Y.length()-lcs;
+        return res;
+        
+    }
+}
+
+
+////2407. Longest Increasing Subsequence II
+class Solution {
+    
+    class Node{
+        int start;
+        int end;
+        int val;
+        Node left;
+        Node right;
+    }
+    
+    
+    public Node construct(int ss, int se){
+        if(ss == se){
+            Node node = new Node();
+            node.val  = 0;
+            node.start = ss;
+            node.end = se;
+            node.left= node.right = null;
+            return node;
+        }
+        Node node = new Node();
+        node.start = ss;
+        node.end = se;
+        int mid = (ss+se)/2;
+         node.left = construct(ss,mid);
+         node.right = construct(mid+1,se);
+        node.val = 0;
+        return node;
+     }
+    
+    public void update(Node node, int idx,int val){
+        if(node.start == node.end){
+            node.val = val;
+            return;
+        }
+        int mid = (node.start+node.end)/2;
+        if(idx <= mid){
+            update(node.left,idx,val);
+        }else{
+            update(node.right,idx,val);
+        }
+        node.val = Math.max(node.left.val,node.right.val);
+    }
+    
+  int query(Node node, int qs, int qe){
+       if(node.start > qe || node.end < qs){
+           return 0;
+       } else if(node.start >= qs && node.end <= qe){
+           return node.val;
+       } else {
+           int lval = query(node.left, qs, qe);
+           int rval = query(node.right, qs, qe);
+           return Math.max(lval, rval);
+       }    
+    }
+    
+    public int lengthOfLIS(int[] nums, int k) {
+       int max = 0;
+        for(int num : nums){
+            max= Math.max(max,num);
+        }
+        Node root = construct(1,max);
+        for(int num : nums){
+            int lo = num-k<=0? 1 : num-k;
+            int hi = num-1;
+            int len = query(root,lo,hi);
+            update(root,num,len+1);
+        }
+        return root.val;
+         
+        
+    }
+}

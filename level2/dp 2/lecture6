@@ -1,0 +1,115 @@
+/////////////////121. Best Time to Buy and Sell Stock   1 transaction
+class Solution {
+    public int maxProfit(int[] prices) {
+        int buy =prices[0];
+        int sell = prices[0];
+        int maxpft = 0;
+        for(int i = 1;i< prices.length;i++){
+            if(prices[i]<buy){
+                buy = prices[i];
+            }
+                sell = prices[i];
+                int pft = sell-buy;
+                maxpft  = Math.max(maxpft,pft);
+            
+        }
+        return maxpft;
+    }
+}
+
+
+
+///////////122. Best Time to Buy and Sell Stock II    infinite transaction
+class Solution {
+    public int maxProfit(int[] prices) {
+        int res = 0;
+        int buy = prices[0];
+        int sell = prices[0];
+        for(int i = 0;i<prices.length;i++){
+            if(prices[i]<sell){
+                res += sell-buy;
+                sell = prices[i];
+                buy = prices[i];
+            }else{
+                sell = prices[i];
+            }
+        }
+        res+= sell-buy;
+        return res;
+        
+    }
+}
+
+ 
+////////////714 best time to buy and sell stock with        transaction fee
+
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        int obsp = -prices[0];/////old bought state profit
+        int ossp = 0;////old sell state profit
+        for(int i = 1;i<prices.length;i++){
+           int nbsp = Math.max(obsp,ossp-prices[i]);
+            int nssp = Math.max(ossp,obsp+prices[i]-fee);
+            
+            
+            obsp = nbsp;
+            ossp = nssp;
+            
+        }
+        return ossp;
+    }
+}
+
+
+
+
+//////////////////309. Best Time to Buy and Sell Stock with Cooldown
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int obsp = -prices[0];
+        int ossp = 0;
+        int ocsp = 0;
+        for(int i = 1;i< prices.length;i++){
+            int nbsp = Math.max(obsp,ocsp-prices[i]);
+            int nssp = Math.max(obsp+prices[i],ossp);
+            int ncsp = Math.max(ossp,ocsp);
+            
+            obsp = nbsp;
+            ossp = nssp;
+            ocsp  = ncsp;
+        }
+        return ossp;
+    }
+}
+
+
+
+
+//////////123. Best Time to Buy and Sell Stock III  at most two transactions.
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] dps = new int[prices.length];
+        int lpsf = prices[0];   ///////lowest price so far
+        dps[0] = 0;
+        for(int i =1;i< prices.length;i++){
+            lpsf = Math.min(prices[i],lpsf);
+            int currpft = prices[i]-lpsf;
+            dps[i] = Math.max(currpft,dps[i-1]);
+        }
+        int [] dpb = new int[prices.length];
+        dpb[prices.length-1] = 0;
+     int    hpsf = prices[prices.length-1];   /////highest price so far
+        for(int i = prices.length-2;i>=0;i--){
+            hpsf = Math.max(prices[i],hpsf);
+            int currpft = hpsf-prices[i];
+            dpb[i] = Math.max(dpb[i+1],currpft);
+        }
+        
+        int res = 0;
+        for(int i = 0;i<prices.length;i++){
+            res = Math.max(res, dps[i]+dpb[i]);
+        }
+        return res;
+    }
+}

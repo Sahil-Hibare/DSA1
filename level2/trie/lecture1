@@ -1,0 +1,153 @@
+///////////////208. Implement Trie (Prefix Tree)
+class Trie {
+   
+    class Node{
+        boolean eow = false;;
+        Node[] children  = new Node[26];
+    }
+    
+    Node root;
+    public Trie() {
+        root = new Node();
+        
+    }
+    
+    public void insert(String word) {
+         Node node = root;
+        for(char ch :word.toCharArray()){
+            if(node.children[ch-'a']== null){
+                node.children[ch-'a'] = new Node();
+            }
+            node = node.children[ch-'a'];
+        }
+        node.eow=  true;
+    }
+    
+    public boolean search(String word) {
+        Node node = root;
+        for(char ch: word.toCharArray()){
+            if(node.children[ch-'a']== null){
+                return false;
+            }
+            node = node.children[ch-'a'];
+        }
+        if(node.eow != true){
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean startsWith(String prefix) {
+           Node node = root;
+        for(char ch: prefix.toCharArray()){
+            if(node.children[ch-'a']== null){
+                return false;
+            }
+            node = node.children[ch-'a'];
+        }
+        return true;
+    }
+}
+
+
+/////////211. Design Add and Search Words Data Structure
+
+class WordDictionary {
+    class Node{
+        boolean eow = false;;
+        Node[] children  = new Node[26];
+    }
+    
+    Node root;
+    public WordDictionary() {
+         root = new Node();
+    }
+    
+    public void addWord(String word) {
+          Node node = root;
+        for(char ch :word.toCharArray()){
+            if(node.children[ch-'a']== null){
+                node.children[ch-'a'] = new Node();
+            }
+            node = node.children[ch-'a'];
+        }
+        node.eow=  true;
+    }
+    
+    public boolean search(String word) {
+       return helper(word,0,root);
+    }
+    
+    public boolean helper(String word, int idx, Node node){
+        if(idx ==word.length()){
+            return node.eow;
+        }
+        
+        char ch = word.charAt(idx);
+        if(ch !='.'){
+            if(node.children[ch-'a']== null){
+                return false;
+            }else{
+                return helper(word,idx+1,node.children[ch-'a']);
+            }
+            
+        }else{
+            boolean res = false;
+            for(int i = 0;i<node.children.length;i++){
+                if(node.children[i] != null){
+                     res |= helper(word,idx+1, node.children[i]); 
+                }
+            }
+            return res;
+        }
+        
+        
+    }
+}
+
+
+///////////////////677. Map Sum Pairs
+class MapSum {
+    class Node{
+        int val = 0;;
+        Node[] arr = new Node[26];
+    }
+  Node root;
+    public MapSum() {
+        root = new Node();
+    }
+    
+    public void insert(String key, int val) {
+        Node temp = root;
+        for(char ch :key.toCharArray()){
+            if(temp.arr[ch-'a']==null){
+                temp.arr[ch-'a'] = new Node();
+            }
+            temp  = temp.arr[ch-'a'];
+        }
+        temp.val = val;
+    }
+    
+    int sum;
+    public int sum(String prefix) {
+        Node temp = root;
+        for(char ch :prefix.toCharArray()){
+            if(temp.arr[ch-'a'] == null){
+                return 0;
+            }
+            temp  = temp.arr[ch-'a'];
+        }
+         sum = 0;
+        helper(temp);
+        return sum;
+    }
+    
+    public void helper(Node node){vnm
+        sum += node.val;
+        for(int i = 0;i<node.arr.length;i++){
+            if(node.arr[i] !=null){
+                helper(node.arr[i]);
+            }
+        }
+    }
+}

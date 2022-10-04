@@ -1,0 +1,152 @@
+/////179. Largest Number
+class Solution {
+    public String largestNumber(int[] nums) {
+        String[] sarr = new String[nums.length];
+        for(int i = 0;i<nums.length;i++){
+            sarr[i] = nums[i]+"";
+        }
+        Arrays.sort(sarr,(a,b) ->{
+           String case1 =  a+b;
+            String case2 = b+a;
+            return case2.compareTo(case1);
+        });
+        
+        if(sarr[0].equals("0")){
+            return "0";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for(String val : sarr){
+            sb.append(val);
+        }
+        return sb.toString();
+    }
+}
+
+
+
+
+/////////307. Range Sum Query - Mutable
+
+class NumArray {
+    class Node{
+        int str;
+        int end;
+        Node left;
+        Node right;
+        int val;
+    }
+    Node root;
+    
+    Node construct(int[] nums,int lo, int hi){
+        if(lo == hi){
+            Node node = new Node();
+            node.str=node.end = lo;
+            node.left= node.right = null;
+            node.val = nums[lo];
+            return node;
+        }
+        Node node = new Node();
+        node.str = lo;
+        node.end = hi;
+        int mid = (lo+hi)/2;
+        node.left  = construct(nums,lo,mid);
+        node.right = construct(nums,mid+1,hi);
+        node.val = 0;
+        node.val+=node.left.val + node.right.val;
+        return node;
+    }
+
+    public NumArray(int[] nums) {
+        root = construct(nums,0,nums.length-1);
+    }
+    
+    public void update(Node node, int idx, int val){
+        if(node.str == node.end){
+            node.val = val;
+            return;
+        }
+        int mid = (node.str+node.end)/2;
+        
+         if(idx <= mid){
+             update(node.left,idx,val);
+         }else{
+             update(node.right,idx,val);
+         }
+        node.val = node.left.val+node.right.val;
+        return;
+    }
+    public void update(int index, int val) {
+        update(root,index,val);
+    }
+      
+    int query(Node node,int qs,int qe){
+        if(node == null || qs > node.end || qe < node.str){
+            return 0;
+        }else if(qs<= node.str && qe>= node.end){
+            return node.val;
+        }else{
+            int sum = 0;
+            sum += query(node.left,qs,qe);
+            sum+=query(node.right,qs,qe);
+            return sum;
+        }
+    }
+    public int sumRange(int left, int right) {
+         return query(root,left,right);
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
+
+
+ /////Z Algorithm
+
+ public class Solution {
+
+  public static int zAlgorithm(String s, String p, int n, int m) {
+ 	// Write your code here;
+      String str = p+"$"+s;
+      int[] zarr = new int[str.length()];
+      zarr[0]= 0;
+      int l = 0;
+      int r = 0;
+      for(int i =1;i< str.length();i++){
+          if(i > r){
+              l =i;
+               r = i;
+              while(r<zarr.length && str.charAt(r)== str.charAt(r-l)){
+                  r++;
+              }
+              r--;
+              zarr[i] = r-l+1;
+          }else{
+            int  k = i-l;
+              if(zarr[k] >= r-i+1){
+                  l = i;
+                  while(r<zarr.length && str.charAt(r)== str.charAt(r-l)){
+                      r++;
+                   }
+                   r--;
+                   zarr[i] = r-l+1;
+              }else{
+                  zarr[i] = zarr[k];
+              }
+          }
+
+	  }
+      int count = 0;
+      for(int val:zarr){
+          if(val == p.length()){
+              count++;
+          }
+      }
+      return count;
+  }
+}
+

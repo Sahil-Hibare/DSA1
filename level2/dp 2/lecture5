@@ -1,0 +1,194 @@
+
+////////knapsack
+
+//////////1. target sum subset
+public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
+
+        int tar = Integer.parseInt(br.readLine());
+
+        boolean[][] dp = new boolean[arr.length+1][tar+1];
+
+        for(int i = 0;i< dp.length; i++){
+            for(int j = 0;j<dp[0].length;j++){
+                if(i ==0 && j == 0){
+                    dp[i][j] = true;
+                }else if(i== 0){
+                    dp[i][j]  = false;
+                }else if(j == 0){
+                    dp[i][j] = true;
+                }else{
+                      int curr = arr[i-1];
+                     if(j>= curr){
+                         dp[i][j] = dp[i-1][j]|| dp[i-1][j-curr];
+                     }else{
+                         dp[i][j] = dp[i-1][j];
+                     }
+                }
+            }
+        }
+        System.out.println(dp[arr.length][tar]);
+ }
+
+
+
+
+
+ ////////////416. Partition Equal Subset Sum
+ class Solution {
+    public boolean canPartition(int[] nums) {
+        
+        int sum = 0;
+        for(int i= 0;i< nums.length;i++){
+            sum += nums[i];
+        }
+        
+        if(sum%2 == 1){
+            return false;
+        }
+        
+        int tar = sum/2;
+        boolean[][] dp = new boolean[nums.length+1][tar+1];
+        for(int i = 0;i<dp.length;i++){
+            for(int j = 0; j<dp[0].length; j++){
+                if(i ==0 && j==0){
+                    dp[i][j] = true;
+                }else if(i == 0){
+                    dp[i][j] = false;
+                }else if(j == 0){
+                    dp[i][j] =  true;
+                }else{
+                    int curr = nums[i-1];
+                    if(j >= curr){
+                        dp[i][j] = dp[i-1][j]||dp[i-1][j-curr];
+                    }else{
+                        dp[i][j] = dp[i-1][j];
+                    }
+                }
+            }
+        }
+        return dp[nums.length][tar];
+        
+        
+    }
+}
+
+
+/////////518. Coin Change 2   combination  indefinite supply
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount+1];
+        dp[0] = 1;
+        for(int coin :coins){
+            for(int  j = 0 ;j<dp.length;j++){
+                if(j>= coin)
+                 dp[j]+=dp[j-coin];
+            }
+        }
+        return dp[amount];
+    }
+}
+
+
+
+
+////////////////377. Combination Sum IV   permutation      indefinite supply
+
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target+1];
+        dp[0] = 1;
+        
+        for(int i = 1 ;i<dp.length;i++){
+            for(int j = 0;j<nums.length;j++){
+                if(i>= nums[j])
+                  dp[i]+=dp[i-nums[j]];
+            }
+        }
+        return dp[target];
+    }
+}
+
+
+
+/////////Zero One Knapsack
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+       int n = sc.nextInt();
+       int[] val = new int[n];
+       int[] wt = new int[n];
+
+       for(int  i = 0;i< n; i++){
+           val[i] = sc.nextInt();
+       }            
+        
+        for(int  i = 0;i< n; i++){
+           wt[i] = sc.nextInt();
+       }
+       int cap = sc.nextInt();
+
+       int[][] dp = new int[n+1][cap+1];
+
+       for(int i = 1;i < dp.length;i++){
+           for(int j = 1; j< dp[0].length;j++){
+              int currval = val[i-1];
+              int currwt = wt[i-1];
+              if(j>= currwt){
+                  dp[i][j] = Math.max(dp[i-1][j],dp[i-1][j-currwt]+currval);
+              }else{
+                  dp[i][j] = dp[i-1][j];
+              }
+           }
+       }
+
+       System.out.println(dp[n][cap]);
+
+    }
+}
+
+
+
+
+///////////Unbounded Knapsack
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+   Scanner sc = new Scanner(System.in);
+     int n = sc.nextInt();
+     int[] val = new int[n];
+     int[] wt = new int[n];
+
+     for(int  i = 0;i< n; i++){
+          val[i] = sc.nextInt();
+    }            
+       
+    for(int  i = 0;i< n; i++){
+          wt[i] = sc.nextInt();
+    }
+   int cap = sc.nextInt();
+
+   int[] dp = new int[cap+1];
+
+
+   for(int i = 1; i <dp.length; i++){
+     for(int j = 0;j<wt.length;j++){
+        if(i >= wt[j]){
+          dp[i] = Math.max(dp[i],dp[i-wt[j]]+val[j]);
+
+        }
+     }
+   }
+     System.out.println(dp[cap]);
+     
+   }
+
+}

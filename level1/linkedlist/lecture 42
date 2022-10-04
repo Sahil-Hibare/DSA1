@@ -1,0 +1,101 @@
+//////Remove At Index In Linked List
+ public void removeAt(int idx) {
+      // write your code here
+        if(size==0){
+          System.out.println("List is empty");
+          return;
+        }
+      if(idx<0 ||idx>=size){
+          System.out.println("Invalid arguments");
+          return;
+      }
+    
+      if(idx==0) removeFirst();
+      else if(idx==size-1)  removeLast();
+      else{
+          Node temp=head;
+          for(int i=0;i<idx-1;i++){
+              temp=temp.next;
+          }
+          temp.next=temp.next.next;
+          size--;
+      }
+      
+    }
+
+
+//////Add At Index In Linked List
+public void addAt(int idx, int val){
+    // write your code here
+    
+    if(idx<0 ||idx>size){
+        System.out.println("Invalid arguments");
+        return;
+    }
+    if(idx==0) addFirst(val);
+    else if(idx==size) addLast(val);
+    else{
+        Node newnode=new Node();
+        newnode.data=val;
+        Node temp=head;
+        for(int i=0;i<idx-1;i++){
+            temp=temp.next;
+        }
+        newnode.next=temp.next;
+        temp.next=newnode;
+        size++;
+    }
+  }
+
+
+  ///Reverse A Linked List (data Iterative)
+  public Node getAtNode(int idx) {
+   
+    Node temp = head;
+    for (int i = 0; i < idx; i++) {
+      temp = temp.next;
+    }
+    return temp;
+  }
+}
+
+public void swap(Node left, Node right){
+    int temp=left.data;
+    left.data=right.data;
+    right.data=temp;
+}
+public void reverseDI() {
+  // write your code here
+  
+  if(size<=1){
+      return;
+  }
+  int left=0,right=size-1;
+  while(left<right){
+      Node leftnode=getAtNode(left);
+      Node rightnode=getAtNode(right);
+      swap(leftnode,rightnode);
+      left++;
+      right--;
+  }
+}
+
+////   Reverse Linked List (pointer Iterative)
+   
+     public void reversePI(){
+      // write your code here
+      if(head==nul||head.next==null){
+          return;
+      }
+            Node ahead=head;
+      Node curr=head;
+      Node prev=null;
+      tail=head;
+      while(curr!=null){
+          ahead=curr.next;
+          curr.next=prev;
+          prev=curr;
+          curr=ahead;
+      }
+      head=prev;
+    }

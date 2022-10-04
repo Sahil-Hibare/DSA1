@@ -1,0 +1,182 @@
+/////queue using stack  push efficient
+
+public class Main {
+
+  public static class StackToQueueAdapter {
+    Stack<Integer> mainS;
+    Stack<Integer> helperS;
+    int size;
+
+    public StackToQueueAdapter() {
+      mainS = new Stack<>();
+      helperS = new Stack<>();
+      size=0;
+    }
+
+    int size() {
+      // write your code here
+      return mainS.size();
+    }
+
+    void add(int val) {
+      // write your code here
+      mainS.push(val);
+      size++;
+    }
+
+    int remove() {
+      // write your code here
+      if(size()==0){
+          System.out.println("Queue underflow");
+          return -1;
+      }
+      
+      while(size()!=0){
+          helperS.push(mainS.pop());
+        
+      }
+     int res= helperS.pop();
+   
+      while(helperS.size()!=0){
+          mainS.push(helperS.pop());
+         
+      }
+      return res;
+    }
+
+    int peek() {
+      // write your code here
+           if(size()==0){
+          System.out.println("Queue underflow");
+          return -1;
+      }
+      while(size()!=0){
+          helperS.push(mainS.pop());
+       
+      }
+     int res= helperS.peek();
+      while(helperS.size()!=0){
+          mainS.push(helperS.pop());
+        
+      }
+      return res;
+    }
+  }
+
+
+
+
+  /////////Stack To Queue Adapter - Remove Efficient
+
+
+  public static class StackToQueueAdapter {
+    Stack<Integer> mainS;
+    Stack<Integer> helperS;
+
+    public StackToQueueAdapter() {
+      mainS = new Stack<>();
+      helperS = new Stack<>();
+    }
+
+    int size() {
+      // write your code here
+     return  mainS.size();
+    }
+
+    void add(int val) {
+      // write your code here
+      while(size()!=0){
+          helperS.push(mainS.pop());
+      }
+      mainS.push(val);
+      while(helperS.size()!=0){
+          mainS.push(helperS.pop());
+      }
+    }
+
+    int remove() {
+      // write your code here
+     if(size()==0){
+         System.out.println("Queue underflow");
+         return -1;
+     }
+     return mainS.pop();
+    }
+
+    int peek() {
+      // write your code here
+        if(size()==0){
+         System.out.println("Queue underflow");
+         return -1;
+     }
+     return mainS.peek();
+    }
+  }
+
+
+/////////20. Valid Parentheses
+
+
+class Solution {
+    public boolean isValid(String s) {
+        
+        Stack<Character> stk=new Stack<>();
+        for(int idx=0;idx<s.length();idx++){
+            char temp=s.charAt(idx);
+            
+         if(temp==')'){
+             if(stk.isEmpty() ||stk.peek()!='('){
+                 return false;
+             }
+             stk.pop();
+         }else if(temp=='}'){
+              if(stk.isEmpty() ||stk.peek()!='{'){
+                 return false;
+             }
+             stk.pop();
+             
+         }else if(temp==']'){
+              if(stk.isEmpty() ||stk.peek()!='['){
+                 return false;
+             }
+             stk.pop();
+             
+         }else if(temp=='{'||temp=='('||temp=='['){
+             stk.push(temp);
+         }
+             
+     }
+      return (stk.size()==0)?true:false;
+    }
+}
+
+
+
+////////Duplicate Brackets
+public static void main(String[] args) throws Exception {
+    Scanner sc=new Scanner(System.in);
+    String str=sc.nextLine();
+    Stack<Character> stk=new Stack<>();
+    for(int i=0;i<str.length();i++){
+        char ch=str.charAt(i);
+        if(ch==')'){
+                
+            if(stk.peek()=='('){
+                System.out.println("true");
+                return;
+            }else{
+                while(stk.peek()!='('){
+                    stk.pop();
+                }
+                stk.pop();
+            }
+            
+        }else{
+            stk.push(ch);
+        }
+        
+    }
+    System.out.println("false");
+
+}
+

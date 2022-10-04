@@ -1,0 +1,188 @@
+/////////////////921. Minimum Add to Make Parentheses Valid
+
+
+class Solution {
+    public int minAddToMakeValid(String s) {
+        Stack<Character> stk = new Stack<>();
+        for(int i = 0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch == '('){
+                stk.push(ch);
+            }else if(stk.size()==0){
+                stk.push(ch);
+            }else{
+                if(stk.peek()=='('){
+                    stk.pop();
+                }else{
+                    stk.push(ch);
+                }
+            }
+        }
+        return stk.size();
+        
+    }
+}
+
+
+
+
+
+//////////////////Minimum number of bracket reversals needed to make an expression balanced
+
+
+class Sol
+{
+    int countRev (String s)
+    {
+        // your code here   
+        if(s.length()%2==1){
+            return -1;
+        }
+        
+        Stack<Character> stk = new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
+            if(ch == '{'){
+                stk.push(ch);
+            }else if(stk.size()==0){
+                stk.push(ch);
+            }else{
+                if(stk.peek()=='{'){
+                    stk.pop();
+                }else{
+                    stk.push(ch);
+                }
+            }
+        }
+        int open = 0;
+        int close = 0;
+        while(stk.size()>0){
+            if(stk.peek()=='}'){
+                close++;
+             
+            }else{
+                open++;
+             
+            }
+            stk.pop();
+        }
+        
+        return ((open+1)/2)+((close+1)/2);
+    }
+}
+
+/////////////Redundant Braces
+public class Solution {
+    public int braces(String A) {
+        Stack<Character> stk = new Stack<>();
+        for(int i = 0;i < A.length();i++){
+            char ch = A.charAt(i);
+            if("(+-*/".indexOf(ch)!=-1){
+                stk.push(ch);
+            }else if(ch == ')'){
+                if(stk.peek() == '('){
+                    return 1;
+                }else{
+                    while(stk.peek()!='('){
+                        stk.pop();
+                    }
+                    stk.pop();
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+/////////////735. Asteroid Collision
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stk = new Stack<>();
+       stk.push(asteroids[0]);
+        for(int i = 1;i<asteroids.length;i++){
+           if(stk.size()==0 ||stk.peek()<0 || asteroids[i]>0){
+               stk.push(asteroids[i]);
+           }else{
+               while(stk.size()>0 && stk.peek()>0 && Math.abs(asteroids[i])>stk.peek()){
+                   stk.pop();
+               }
+               if(stk.size()==0 || stk.peek()<0){
+                   stk.push(asteroids[i]);
+               }else if(stk.peek()== Math.abs(asteroids[i])){
+                   stk.pop();
+               }else if(stk.peek()> Math.abs(asteroids[i])){
+                   continue;
+               }
+           }
+        }
+        int[] res = new int[stk.size()];
+        for(int i = res.length-1;i>=0;i--){
+            res[i] = stk.pop();
+        }
+        return res;
+        
+    }
+}
+
+
+
+
+////////////Length of the longest valid substring
+//User function Template for Java
+class Solution {
+    static int findMaxLen(String S) {
+        // code here
+        Stack<Integer> stk = new Stack<>();
+        stk.push(-1);
+        int max= 0;
+        for(int i = 0;i<S.length();i++){
+            char ch = S.charAt(i);
+            if(ch == '('){
+                stk.push(i);
+            }else{
+                stk.pop();
+                if(stk.size()>0){
+                    int curr = i-stk.peek();
+                    max= Math.max(max,curr);
+                    
+                }else{
+                    stk.push(i);
+                }
+            }
+        }
+        return max;
+    }
+};
+
+
+
+
+////////////matrix chain multiplication
+
+class Solution{
+    static int matrixMultiplication(int N, int arr[])
+    {
+        // code here
+        int[][] dp = new int[arr.length-1][arr.length-1];
+        for(int  g = 0;g<dp.length;g++){
+            for(int i = 0,j = g; j < dp[0].length; i++,j++){
+                if(g == 0){
+                    dp[i][j] = 0;
+                }else if(g ==1){
+                    dp[i][j] = arr[i]*arr[j]*arr[j+1];
+                }else{
+                    int min = Integer.MAX_VALUE;
+                    for(int k1 = 1,k2=g;k1<=g;k1++,k2--){
+                        int left =dp[i][j-k2]; ///arr[i]*arr[j-k2+1];
+                        int right = dp[i+k1][j]; ////arr[i+k1][j+1];
+                        int multc= arr[i]*arr[j+1]*arr[j-k2+1];
+                        min = Math.min(min,left+right+multc);
+                        dp[i][j] = min;
+                    }
+                }
+            }
+        }
+        return dp[0][dp[0].length-1];
+    }
+}

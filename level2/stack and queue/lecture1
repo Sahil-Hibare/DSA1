@@ -1,0 +1,180 @@
+///////////739. Daily Temperatures
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        Stack<Integer> stk = new Stack<>();
+        int[] res = new int[temperatures.length];
+        for(int i = temperatures.length-1;i>=0;i--){
+            while(stk.size()>0 && temperatures[stk.peek()]<=temperatures[i]){
+                stk.pop();
+            }
+            if(stk.size() == 0){
+                res[i] = 0;
+            }else{
+                res[i] = stk.peek()-i;
+            }
+            stk.push(i);
+            
+        }
+        return res;
+    }
+}
+
+
+
+//////////////Maximum Difference
+class Solution
+{
+    int findMaxDiff(int a[], int n)
+    {
+	// Your code here	
+	int[] right = rightsmaller(a,n);
+	int[] left = leftsmaller(a,n);
+	int ans = 0;
+	for(int i = 0;i<n;i++){
+	    ans = Math.max(ans, Math.abs(right[i]-left[i]));
+	}
+	return ans;
+    }
+    
+     int[] rightsmaller(int a[], int n){
+         int[] res = new int[n];
+         Stack<Integer> stk  = new Stack<>();
+         for(int i = n-1;i>=0 ;i--){
+             while(stk.size()>0 && a[stk.peek()]>= a[i]){
+                 stk.pop();
+             }
+             if(stk.size() == 0){
+                 res[i] = 0;
+             }else{
+                 res[i] = a[stk.peek()];
+             }
+             stk.push(i);
+         }
+         return res;
+     }
+     
+     int[] leftsmaller(int a[], int n){
+         int[] leftres = new int[n];
+         Stack<Integer> stk = new Stack<>();
+         for(int i = 0;i < a.length;i++){
+             while(stk.size()>0 &&a[stk.peek()]>= a[i] ){
+                 stk.pop();
+             }
+              if(stk.size() == 0){
+                 leftres[i] = 0;
+             }else{
+                 leftres[i] = a[stk.peek()];
+             }
+             stk.push(i);
+         }
+         return leftres;
+     }
+}
+
+/////////////////20. Valid Parentheses
+class Solution {
+    public boolean isValid(String s) {
+        
+        Stack<Character> stk=new Stack<>();
+        for(int idx=0;idx<s.length();idx++){
+            char temp=s.charAt(idx);
+            
+         if(temp==')'){
+             if(stk.isEmpty() ||stk.peek()!='('){
+                 return false;
+             }
+             stk.pop();
+         }else if(temp=='}'){
+              if(stk.isEmpty() ||stk.peek()!='{'){
+                 return false;
+             }
+             stk.pop();
+             
+         }else if(temp==']'){
+              if(stk.isEmpty() ||stk.peek()!='['){
+                 return false;
+             }
+             stk.pop();
+             
+         }else if(temp=='{'||temp=='('||temp=='['){
+             stk.push(temp);
+         }
+             
+     }
+      return (stk.size()==0)?true:false;
+    }
+}
+
+///////////////85. Maximal Rectangle
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        
+        int[] arr = new int[matrix[0].length];
+        int res = 0;
+        for(int i = 0;i<matrix.length;i++){
+            for(int j = 0; j<matrix[0].length;j++){
+                if(matrix[i][j] == '0'){
+                    arr[j] = 0;
+                }else{
+                    arr[j]+= 1;
+                }
+            }
+            int currmax = largestRectangleArea(arr);
+            res = Math.max(currmax,res);
+            
+        }
+        return res;
+    }
+    
+    
+        public int largestRectangleArea(int[] heights) {
+        int[] nl=nsl(heights);
+        int[] nr=nsr(heights);
+        int maxarea=Integer.MIN_VALUE;
+        for(int i=0;i<heights.length;i++){
+           
+            int area=(nr[i]-nl[i]-1)*heights[i];
+            maxarea=Math.max(maxarea,area);
+        }
+       return maxarea; 
+    }
+    
+    
+    public int[] nsl(int[] arr){
+        int[] res=new int[arr.length];
+        Stack<Integer> stk=new Stack<>();
+        for(int i=0;i<arr.length;i++){
+            int curr=arr[i];
+            while(stk.size()>0 && curr<=arr[stk.peek()]){
+                stk.pop();
+            }
+            if(stk.isEmpty()){
+                res[i]=-1;
+            }else{
+            res[i]=stk.peek();
+            }
+            stk.push(i);
+           
+        }
+         return res;
+    }
+    
+    public int[] nsr(int[] arr){
+               int[] res=new int[arr.length];
+        Stack<Integer> stk=new Stack<>();
+        for(int i=arr.length-1;i>=0;i--){
+            int curr=arr[i];
+            while(stk.size()>0 && curr<=arr[stk.peek()]){
+                stk.pop();
+            }
+            if(stk.isEmpty()){
+                res[i]=arr.length;
+            }else{
+            res[i]=stk.peek();
+            }
+            stk.push(i);
+            
+        }
+        return res;
+    }
+}
