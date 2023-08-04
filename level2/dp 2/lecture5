@@ -80,7 +80,7 @@ public static void main(String[] args) throws Exception {
 }
 
 
-/////////518. Coin Change 2   combination  indefinite supply
+/////////518. Coin Change  combination  indefinite supply
 
 class Solution {
     public int change(int amount, int[] coins) {

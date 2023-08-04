@@ -1,0 +1,124 @@
+/////Floor in a Sorted Array
+   static int findFloor(long arr[], int n, long x)
+    {
+      if(x < arr[0]){
+          return -1;
+      }
+      
+      int start = 0;
+      int end = n-1;
+      while(start<=end){
+          int mid = start+(end-start)/2;
+          if(arr[mid]==x){
+              return mid;
+          }else if(x<arr[mid]){
+              end = mid-1;
+          }else if(x> arr[mid]){
+              start = mid+1;
+          }
+      }
+      return end;
+    }
+
+///////ceil in a sorted array
+static int findceil(long arr[], int n, long x)
+{
+  int start = 0;
+  int end = n-1;
+  if(x >= arr[end]){
+    return -1;
+}
+  while(start<=end){
+      int mid = start+(end-start)/2;
+      if(arr[mid]==x){
+          return mid;
+      }else if(x<arr[mid]){
+          end = mid-1;
+      }else if(x> arr[mid]){
+          start = mid+1;
+      }
+  }
+  return start;
+}
+
+///744. Find Smallest Letter Greater Than Target
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int start =0;
+        int end   = letters.length-1;
+        if(target >= letters[end]){
+            return letters[0];
+        }
+        while(start<=end){
+            int mid = start+(end-start)/2;
+            if(target < letters[mid]){
+                end= mid-1;
+            }else{
+                start = mid+1;
+            }
+        }
+        return letters[start];
+    }
+}
+
+
+//////34. Find First and Last Position of Element in Sorted Array
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+         if(nums.length==0){
+             int[] res = new int[2];
+             res[0] = -1;
+             res[1] = -1;
+             return res;
+         }
+        int[] res = new int[2];
+        res[0] = floor(nums,target);
+        res[1] = ceil(nums,target);
+        return res;
+    }
+
+    public int floor(int[] nums, int target){
+        int start = 0;
+        int end = nums.length-1;
+        int ans = -1;
+        if(target <nums[0]|| target> nums[end]){
+            return -1;
+        }
+
+        while(start<= end){
+            int mid = start+(end-start)/2;
+            if(target< nums[mid]){
+                end = mid-1;
+            }else if(target == nums[mid]){
+                ans  = mid;
+                end = mid-1;
+            }
+            else{
+                start = mid+1;
+            }
+        }
+        return ans;
+    }
+    public int ceil(int[] nums, int target){
+        int start = 0;
+        int end = nums.length-1;
+         int ans = -1;
+        if(target <nums[0]|| target> nums[end]){
+            return -1;
+        }
+        while(start<= end){
+            int mid  = start+(end-start)/2;
+            if(target< nums[mid]){
+                end = mid-1;
+            }else if(target== nums[mid]){
+                 ans = mid;
+                 start = mid+1;
+            }
+            else{
+                start = mid+1;
+            }
+        }
+        return ans;
+    }
+}
+

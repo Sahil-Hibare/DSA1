@@ -1,0 +1,183 @@
+///268. Missing Number
+////Given an array nums containing n distinct numbers in the range [0, n]
+class Solution {
+    public int missingNumber(int[] nums) {
+     
+    int i = 0;
+    while(i<nums.length){
+        int correct = nums[i];
+        if(nums[i]<nums.length && nums[i]!= nums[correct]){
+        swap(nums,i,correct);
+        }else{
+            i++;
+        }
+    }
+ 
+    int res = nums.length;
+    for( int idx=0;idx<nums.length;idx++){
+        if(nums[idx]!=idx){
+            res= idx;
+        }
+    }
+   return res;
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j]= temp;
+    }
+}
+
+////////448. Find All Numbers Disappeared in an Array
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        int i = 0;
+        while(i<nums.length){
+            int correct = nums[i]-1;
+            if(nums[i]!= nums[correct]){
+                swap(nums, i,correct);
+            }else{
+                i++;
+            }
+        }
+        for(int idx= 0;idx<nums.length;idx++){
+            if(nums[idx]!=idx+1){
+                res.add(idx+1);
+            }
+        }
+        
+        return res;
+    }
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+}
+
+//////287. Find the Duplicate Number
+////There is only one repeated number in nums, return this repeated number.
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int i= 0;
+        while(i<nums.length){
+            if(nums[i]!=i+1){
+               int correct = nums[i]-1;
+               if(nums[i]==nums[correct]){
+                   return nums[i];
+               }else{
+                   swap(nums,i,correct);
+               }
+            }else{
+                i++;
+            }
+        }
+     return -1;   
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] =  temp;
+    }
+}
+
+
+///////442. Find All Duplicates in an Array
+/////integer appears once or twice, return an array of all the integers that appears twice.
+
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        int i = 0;
+        while(i<nums.length){
+            int correct = nums[i]-1;
+            if(nums[i]!= nums[correct]){
+              swap(nums,i,correct);
+            }else{
+                i++;
+            }
+        }
+
+        for(int idx = 0;idx<nums.length;idx++){
+            if(nums[idx]!=idx+1){
+                res.add(nums[idx]);
+            }
+        }
+        return res;
+    }
+
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+
+
+
+////645. Set Mismatch
+/////Find the number that occurs twice and the number that is missing and return them in the form of an array.
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int i = 0;
+        while(i < nums.length){
+            int correct = nums[i]-1;
+            if(nums[i] != nums[correct]){
+                swap(nums, i,correct);
+            }else{
+                i++;
+            }
+        }
+        int[] res = new int[2];
+         
+        for(int idx = 0;idx<nums.length;idx++){
+       
+            if(nums[idx]!= (idx+1)){
+               
+                res[0] = nums[idx];
+                res[1] = idx+1;
+            }
+        }
+        return res;
+    }
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i]  = nums[j];
+        nums[j] = temp;
+    }
+}
+
+
+
+
+//////41. First Missing Positive
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        int i = 0;
+        while(i<nums.length){
+            int correct = nums[i]-1;
+            if(nums[i]>0 && nums[i]<=nums.length && nums[i] != nums[correct]){
+                swap(nums, i, correct);
+            }else{
+                i++;
+            }
+        }
+        int res = nums.length+1;
+        for(int idx = 0;idx < nums.length;idx++){
+            if(nums[idx]!= idx+1){
+                res = idx+1;
+                break;
+            }
+        }
+        return res;
+    }
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}

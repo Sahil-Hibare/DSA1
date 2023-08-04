@@ -70,6 +70,38 @@ class Sol
         return ((open+1)/2)+((close+1)/2);
     }
 }
+//////approach 2
+class Sol
+{
+    int countRev (String s)
+    {
+        // your code here   
+        if(s.length()%2==1){
+            return -1;
+        }
+        int count = 0;
+       Stack<Character> stk = new Stack<>();
+       for(int i = 0;i<s.length();i++){
+           char curr = s.charAt(i);
+           
+           if(curr =='{'){
+               stk.push(curr);
+           }else{
+               if(stk.size()==0){
+                   count++;
+                   stk.push('{');
+               }else if(stk.peek()=='{'){
+                   stk.pop();
+               }
+           }
+       }
+       
+       count += stk.size()/2;
+       return count;
+    }
+}
+
+
 
 /////////////Redundant Braces
 public class Solution {

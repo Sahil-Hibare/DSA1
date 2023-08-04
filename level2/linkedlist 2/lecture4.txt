@@ -1,0 +1,92 @@
+///////Subtraction in Linked List
+class Solution
+{
+    static int size(Node node){
+        int size = 0;
+        while(node != null){
+            size++;
+            node = node.next;
+        }
+        return size;
+    }
+    
+    static Node leadingzeroes(Node node){
+        Node temp = node;
+        while(temp!= null && temp.data == 0){
+            temp = temp.next;
+        }
+        if(temp == null){
+            return new Node(0);
+        }
+        return temp;
+    }
+    
+    static Node paddingZeroesAtStart(Node node, int num){
+        for(int i = 0;i<num;i++){
+            Node temp = new Node(0);
+            temp.next = node;
+            node = temp;
+        }
+        return node;
+    }
+    
+    
+  
+    static Node subLinkedList(Node l1, Node l2)
+    {
+        // code here
+        l1 = leadingzeroes(l1);
+        l2 = leadingzeroes(l2);
+        
+        int size1 = size(l1);
+        int size2 = size(l2);
+           Node larger= new Node(-1);
+            Node smaller = new Node(-1);
+        if(size1>size2){
+            larger = l1;
+          smaller = paddingZeroesAtStart(l2,size1-size2);
+        }else if(size1<size2){
+            larger = l2;
+            smaller  = paddingZeroesAtStart(l1,size2-size1);
+        }else{
+            while(l1 != null){
+                if(l1.data> l2.data){
+                    larger = l1;
+                    smaller = l2;
+                    break;
+                }else if(l1.data<l2.data){
+                    larger = l2;
+                    smaller = l1;
+                    break;
+                }else{
+                    l1 = l1.next;
+                    l2 = l2.next;
+                }
+            }
+           
+        }
+         borrow = 0;
+          Node res =   helper(larger,smaller);
+          return leadingzeroes(res);
+        
+    }
+
+public static int borrow;
+public static Node  helper(Node num1, Node num2){
+    if(num1 == null){
+        return null;
+    }
+    Node prev = helper(num1.next,num2.next);
+   int data = num1.data-num2.data-borrow;
+   borrow = 0;
+   if(data<0){
+       borrow = 1;
+       data += 10;
+   }
+   Node curr = new Node(data);
+   curr.next = prev;
+   return curr;
+    
+   }
+    
+}

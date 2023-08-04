@@ -1,0 +1,79 @@
+////83. Remove Duplicates from Sorted List
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy=new ListNode(-1);
+         ListNode tail=dummy;
+             dummy.next=head;
+        while(head!=null){
+            if(tail==dummy||head.val!=tail.val){
+                tail.next=head;
+                tail=tail.next;
+               
+            }  
+            head=head.next;
+                
+            
+        }
+         tail.next= null;
+        return dummy.next;
+    }
+}
+
+///another approach
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+      if(head == null ||head.next ==null){
+          return head;
+      }
+      ListNode curr = head;
+      ListNode forw = null;
+      while(curr != null){
+          forw = curr.next;
+          curr.next = null;
+          if(tt==null||tt.val!= curr.val){
+              addLast(curr);
+          }
+          curr = forw;
+      }
+      return th;
+    }
+    public ListNode th= null;
+    public ListNode tt = null;
+    public void addLast(ListNode node){
+      if(tt== null){
+         th = tt = node;
+      }else{
+       tt.next = node;
+       tt = tt.next;
+      }
+    }
+}
+
+
+////82. Remove Duplicates from Sorted List II
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null|| head.next == null){
+            return head;
+        }
+       ListNode dummy = new ListNode(-1);
+       ListNode itr = dummy;
+       itr.next = head;
+       ListNode curr = head.next;
+       while(curr != null){
+           boolean isloopRun = false;
+           while(curr != null && itr.next.val == curr.val){
+               isloopRun = true;
+               curr= curr.next;
+           }
+           if(isloopRun) itr.next = curr;
+           else itr = itr.next;
+
+           if(curr != null) curr = curr.next;
+       }
+       return dummy.next;
+        
+    }
+}
